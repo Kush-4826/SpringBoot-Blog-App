@@ -4,6 +4,7 @@ import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.UserDto;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,13 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UserDto> store(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> store(@Valid @RequestBody UserDto userDto) {
         UserDto user = this.userServiceImpl.createUser(userDto);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<UserDto> update(@Valid @RequestBody UserDto userDto, @PathVariable String id) throws ResourceNotFoundException {
         UserDto updatedUser = this.userServiceImpl.updateUser(userDto, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
