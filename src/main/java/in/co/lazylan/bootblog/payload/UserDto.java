@@ -25,4 +25,5 @@ public class UserDto {
     private String email;
     @NotEmpty(message = "Gender cannot be empty")
     private String gender;
+    private String about;
 }
