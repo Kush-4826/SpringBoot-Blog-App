@@ -1,5 +1,6 @@
 package in.co.lazylan.bootblog.service.impl;
 
+import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.UserDto;
 import in.co.lazylan.bootblog.repo.UserRepository;
@@ -30,27 +31,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto, String id) {
-        return null;
+    public UserDto updateUser(UserDto userDto, String id) throws ResourceNotFoundException {
+        User user = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setUsername(userDto.getUsername());
+        user.setGender(userDto.getGender());
+        User updatedUser = this.userRepository.save(user);
+        return this.modelMapper.map(updatedUser, UserDto.class);
     }
 
     @Override
-    public UserDto getUserById(String id) {
-        return null;
+    public UserDto getUserById(String id) throws ResourceNotFoundException {
+        User user = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
+        return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
-        return null;
+    public UserDto getUserByEmail(String email) throws ResourceNotFoundException {
+        User user = this.userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Email", email));
+        return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return List.of();
+        List<User> users = this.userRepository.findAll();
+        List<UserDto> userDtos = users.stream()
+                .map((user) -> this.modelMapper.map(user, UserDto.class))
+                .toList();
+        return userDtos;
     }
 
     @Override
-    public void deleteUserById(String id) {
-
+    public void deleteUserById(String id) throws ResourceNotFoundException {
+        User user = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
+        this.userRepository.delete(user);
     }
 }
