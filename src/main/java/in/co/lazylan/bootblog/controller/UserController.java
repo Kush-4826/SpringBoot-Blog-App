@@ -29,26 +29,18 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable String id) {
-        try {
-            UserDto updatedUser = this.userServiceImpl.updateUser(userDto, id);
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable String id) throws ResourceNotFoundException {
+        UserDto updatedUser = this.userServiceImpl.updateUser(userDto, id);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        try {
-            this.userServiceImpl.deleteUserById(id);
-            return new ResponseEntity<>(
-                    new SuccessResponse("User with id " + id + " Deleted Successfully"),
-                    HttpStatus.OK
-            );
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<?> delete(@PathVariable String id) throws ResourceNotFoundException {
+        this.userServiceImpl.deleteUserById(id);
+        return new ResponseEntity<>(
+                new SuccessResponse("User with id " + id + " Deleted Successfully"),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("")
@@ -58,12 +50,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> show(@PathVariable String id) {
-        try {
-            UserDto user = this.userServiceImpl.getUserById(id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<UserDto> show(@PathVariable String id) throws ResourceNotFoundException {
+        UserDto user = this.userServiceImpl.getUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
