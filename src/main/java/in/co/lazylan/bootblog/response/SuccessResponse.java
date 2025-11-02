@@ -1,7 +1,10 @@
 package in.co.lazylan.bootblog.response;
 
-public class SuccessResponse extends ApiResponse {
-    public SuccessResponse(String message) {
-        super(message);
-    }
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class SuccessResponse {
+    private String message;
 }
