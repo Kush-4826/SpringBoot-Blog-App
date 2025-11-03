@@ -1,4 +1,4 @@
-package in.co.lazylan.bootblog.payload;
+package in.co.lazylan.bootblog.payload.request;
 
 import in.co.lazylan.bootblog.service.impl.UserServiceImpl;
 import in.co.lazylan.bootblog.validator.annotation.Unique;
@@ -14,9 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserDto {
-    private String id;
-
+public class UserRequestDTO {
     @NotEmpty(message = "Username cannot be empty")
     @Size(min = 3, message = "Username must be at least 3 characters long")
     @Unique(service = UserServiceImpl.class, fieldName = "username", message = "Username already exists")

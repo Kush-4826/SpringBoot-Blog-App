@@ -1,4 +1,4 @@
-package in.co.lazylan.bootblog.payload;
+package in.co.lazylan.bootblog.payload.request;
 
 import in.co.lazylan.bootblog.service.impl.CategoryServiceImpl;
 import in.co.lazylan.bootblog.validator.annotation.Unique;
@@ -13,9 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CategoryDto {
-    private String id;
-
+public class CategoryRequestDTO {
     @NotBlank(message = "Name is required")
     @Size(min = 3, message = "Name must be at least 3 characters long")
     @Unique(service = CategoryServiceImpl.class, fieldName = "name", message = "Category already exists")

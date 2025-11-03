@@ -1,15 +1,17 @@
-package in.co.lazylan.bootblog.payload;
+package in.co.lazylan.bootblog.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BlogDto {
+@AllArgsConstructor
+@ToString
+public class BlogResponseDTO {
     private String id;
 
     private String title;
@@ -22,7 +24,7 @@ public class BlogDto {
 
     private LocalDate createdDate;
 
-    private CategoryDto category;
+    private CategoryResponseDTO category;
 
-    private UserDto author;
+    private UserResponseDTO author;
 }
