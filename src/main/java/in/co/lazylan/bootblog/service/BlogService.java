@@ -19,9 +19,9 @@ public interface BlogService {
 
     List<BlogResponseDTO> getAllBlogs();
 
-    List<BlogResponseDTO> getBlogByCategory(String id);
+    List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException;
 
-    List<BlogResponseDTO> getBlogByAuthor(String id);
+    List<BlogResponseDTO> getBlogByAuthor(String id) throws ResourceNotFoundException;
 
     List<BlogResponseDTO> searchBlog(String keyword);
 }
