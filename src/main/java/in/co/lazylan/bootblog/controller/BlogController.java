@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class BlogController {
@@ -35,5 +37,21 @@ public class BlogController {
     ) throws ResourceNotFoundException {
         BlogResponseDTO dto = this.blogService.updateBlog(blogDto, blogId);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("/categories/{categoryId}/blogs")
+    public ResponseEntity<List<BlogResponseDTO>> getBlogsByCategory(
+            @PathVariable String categoryId
+    ) throws ResourceNotFoundException {
+        List<BlogResponseDTO> blogsByCategory = this.blogService.getBlogsByCategory(categoryId);
+        return new ResponseEntity<>(blogsByCategory, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}/blogs")
+    public ResponseEntity<List<BlogResponseDTO>> getBlogsByAuthor(
+            @PathVariable String userId
+    ) throws ResourceNotFoundException {
+        List<BlogResponseDTO> blogsByAuthor = this.blogService.getBlogByAuthor(userId);
+        return new ResponseEntity<>(blogsByAuthor, HttpStatus.OK);
     }
 }
