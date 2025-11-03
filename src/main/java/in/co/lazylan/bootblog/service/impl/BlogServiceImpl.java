@@ -1,0 +1,98 @@
+package in.co.lazylan.bootblog.service.impl;
+
+import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
+import in.co.lazylan.bootblog.model.Blog;
+import in.co.lazylan.bootblog.payload.BlogDto;
+import in.co.lazylan.bootblog.repo.BlogRepository;
+import in.co.lazylan.bootblog.repo.CategoryRepository;
+import in.co.lazylan.bootblog.repo.UserRepository;
+import in.co.lazylan.bootblog.service.BlogService;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class BlogServiceImpl implements BlogService {
+
+    private final BlogRepository blogRepository;
+    private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+
+    public BlogServiceImpl(BlogRepository blogRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository) {
+        this.blogRepository = blogRepository;
+        this.modelMapper = modelMapper;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+
+        /*
+        Creating a converter that will convert the title of the blog to the slug
+         */
+        Converter<String, String> titleToSlug = context -> {
+            String title = context.getSource();
+            return title == null ? null :
+                    title.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+        };
+
+        /*
+        Now we create a PropertyMap to map the property. The type of the property
+        map is <BlogDto, Blog> because we want this map to be executed when the
+        modelmapper maps a dto object to the model object.
+         */
+        PropertyMap<BlogDto, Blog> blogMap = new PropertyMap<BlogDto, Blog>() {
+            /*
+            In the configure method, we use our titleToSlug converter to map the title
+            of the source (BlogDto) to the Slug of the destination (Blog)
+             */
+            protected void configure() {
+                using(titleToSlug).map(source.getTitle()).setSlug(null);
+            }
+        };
+
+        // Finally we add this property map to the modelmapper
+        this.modelMapper.addMappings(blogMap);
+    }
+
+    @Override
+    public BlogDto createBlog(BlogDto blogDto, String authorId, String categoryId) throws ResourceNotFoundException {
+        return null;
+    }
+
+    @Override
+    public BlogDto updateBlog(BlogDto blogDto, String id) {
+        return null;
+    }
+
+    @Override
+    public void deleteBlogById(String id) {
+
+    }
+
+    @Override
+    public BlogDto getBlogById(String id) {
+        return null;
+    }
+
+    @Override
+    public List<BlogDto> getAllBlogs() {
+        return List.of();
+    }
+
+    @Override
+    public List<BlogDto> getBlogByCategory(String id) {
+        return List.of();
+    }
+
+    @Override
+    public List<BlogDto> getBlogByAuthor(String id) {
+        return List.of();
+    }
+
+    @Override
+    public List<BlogDto> searchBlog(String keyword) {
+        return List.of();
+    }
+}
