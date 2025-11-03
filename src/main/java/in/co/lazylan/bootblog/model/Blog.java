@@ -28,6 +28,7 @@ public class Blog {
     @Column(nullable = false)
     private String imageName;
 
+    // TODO: Convert to LocalDateTime
     @Column(nullable = false)
     private LocalDate createdDate;
 
