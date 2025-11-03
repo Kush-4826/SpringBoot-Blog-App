@@ -1,7 +1,8 @@
 package in.co.lazylan.bootblog.controller;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
-import in.co.lazylan.bootblog.payload.UserDto;
+import in.co.lazylan.bootblog.payload.request.UserRequestDTO;
+import in.co.lazylan.bootblog.payload.response.UserResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.UserService;
 import jakarta.validation.Valid;
@@ -24,14 +25,14 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UserDto> store(@Valid @RequestBody UserDto userDto) {
-        UserDto user = this.userServiceImpl.createUser(userDto);
+    public ResponseEntity<UserResponseDTO> store(@Valid @RequestBody UserRequestDTO userDto) {
+        UserResponseDTO user = this.userServiceImpl.createUser(userDto);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@Valid @RequestBody UserDto userDto, @PathVariable String id) throws ResourceNotFoundException {
-        UserDto updatedUser = this.userServiceImpl.updateUser(userDto, id);
+    public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userDto, @PathVariable String id) throws ResourceNotFoundException {
+        UserResponseDTO updatedUser = this.userServiceImpl.updateUser(userDto, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -45,14 +46,14 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<UserDto>> index() {
-        List<UserDto> users = this.userServiceImpl.getAllUsers();
+    public ResponseEntity<List<UserResponseDTO>> index() {
+        List<UserResponseDTO> users = this.userServiceImpl.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> show(@PathVariable String id) throws ResourceNotFoundException {
-        UserDto user = this.userServiceImpl.getUserById(id);
+    public ResponseEntity<UserResponseDTO> show(@PathVariable String id) throws ResourceNotFoundException {
+        UserResponseDTO user = this.userServiceImpl.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

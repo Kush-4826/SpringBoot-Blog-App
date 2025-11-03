@@ -2,7 +2,8 @@ package in.co.lazylan.bootblog.service.impl;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.User;
-import in.co.lazylan.bootblog.payload.UserDto;
+import in.co.lazylan.bootblog.payload.request.UserRequestDTO;
+import in.co.lazylan.bootblog.payload.response.UserResponseDTO;
 import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -24,14 +25,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserResponseDTO createUser(UserRequestDTO userDto) {
         User user = modelMapper.map(userDto, User.class);
         User savedUser = this.userRepository.save(user);
-        return modelMapper.map(savedUser, UserDto.class);
+        return modelMapper.map(savedUser, UserResponseDTO.class);
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto, String id) throws ResourceNotFoundException {
+    public UserResponseDTO updateUser(UserRequestDTO userDto, String id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
@@ -41,30 +42,30 @@ public class UserServiceImpl implements UserService {
         user.setGender(userDto.getGender());
         user.setAbout(userDto.getAbout());
         User updatedUser = this.userRepository.save(user);
-        return this.modelMapper.map(updatedUser, UserDto.class);
+        return this.modelMapper.map(updatedUser, UserResponseDTO.class);
     }
 
     @Override
-    public UserDto getUserById(String id) throws ResourceNotFoundException {
+    public UserResponseDTO getUserById(String id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
-        return this.modelMapper.map(user, UserDto.class);
+        return this.modelMapper.map(user, UserResponseDTO.class);
     }
 
     @Override
-    public UserDto getUserByEmail(String email) throws ResourceNotFoundException {
+    public UserResponseDTO getUserByEmail(String email) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Email", email));
-        return this.modelMapper.map(user, UserDto.class);
+        return this.modelMapper.map(user, UserResponseDTO.class);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         List<User> users = this.userRepository.findAll();
-        List<UserDto> userDtos = users.stream()
-                .map((user) -> this.modelMapper.map(user, UserDto.class))
+        List<UserResponseDTO> userDtos = users.stream()
+                .map((user) -> this.modelMapper.map(user, UserResponseDTO.class))
                 .toList();
         return userDtos;
     }

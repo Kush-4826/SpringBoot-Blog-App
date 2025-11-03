@@ -1,7 +1,8 @@
 package in.co.lazylan.bootblog.service;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
-import in.co.lazylan.bootblog.payload.CategoryDto;
+import in.co.lazylan.bootblog.payload.request.CategoryRequestDTO;
+import in.co.lazylan.bootblog.payload.response.CategoryResponseDTO;
 import in.co.lazylan.bootblog.util.FieldValueExists;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +10,15 @@ import java.util.List;
 
 @Service
 public interface CategoryService extends FieldValueExists {
-    List<CategoryDto> getAllCategories();
+    List<CategoryResponseDTO> getAllCategories();
 
-    CategoryDto getCategoryById(String id) throws ResourceNotFoundException;
+    CategoryResponseDTO getCategoryById(String id) throws ResourceNotFoundException;
 
-    CategoryDto getCategoryByName(String name) throws ResourceNotFoundException;
+    CategoryResponseDTO getCategoryByName(String name) throws ResourceNotFoundException;
 
-    CategoryDto createCategory(CategoryDto categoryDto);
+    CategoryResponseDTO createCategory(CategoryRequestDTO categoryDto);
 
-    CategoryDto updateCategory(CategoryDto categoryDto, String id) throws ResourceNotFoundException;
+    CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, String id) throws ResourceNotFoundException;
 
     void deleteCategoryById(String id) throws ResourceNotFoundException;
 }

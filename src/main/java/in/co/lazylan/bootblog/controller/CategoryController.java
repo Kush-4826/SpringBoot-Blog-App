@@ -1,7 +1,8 @@
 package in.co.lazylan.bootblog.controller;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
-import in.co.lazylan.bootblog.payload.CategoryDto;
+import in.co.lazylan.bootblog.payload.request.CategoryRequestDTO;
+import in.co.lazylan.bootblog.payload.response.CategoryResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.CategoryService;
 import jakarta.validation.Valid;
@@ -23,26 +24,26 @@ public class CategoryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CategoryDto>> index() {
-        List<CategoryDto> categoryDtoList = this.categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryResponseDTO>> index() {
+        List<CategoryResponseDTO> categoryDtoList = this.categoryService.getAllCategories();
         return ResponseEntity.ok().body(categoryDtoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> show(@PathVariable String id) throws ResourceNotFoundException {
-        CategoryDto categoryById = this.categoryService.getCategoryById(id);
+    public ResponseEntity<CategoryResponseDTO> show(@PathVariable String id) throws ResourceNotFoundException {
+        CategoryResponseDTO categoryById = this.categoryService.getCategoryById(id);
         return ResponseEntity.ok().body(categoryById);
     }
 
     @PostMapping("")
-    public ResponseEntity<CategoryDto> store(@Valid @RequestBody CategoryDto categoryDto) {
-        CategoryDto category = this.categoryService.createCategory(categoryDto);
+    public ResponseEntity<CategoryResponseDTO> store(@Valid @RequestBody CategoryRequestDTO categoryDto) {
+        CategoryResponseDTO category = this.categoryService.createCategory(categoryDto);
         return ResponseEntity.ok().body(category);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable String id, @Valid @RequestBody CategoryDto categoryDto) throws ResourceNotFoundException {
-        CategoryDto updatedCategory = this.categoryService.updateCategory(categoryDto, id);
+    public ResponseEntity<CategoryResponseDTO> update(@PathVariable String id, @Valid @RequestBody CategoryRequestDTO categoryDto) throws ResourceNotFoundException {
+        CategoryResponseDTO updatedCategory = this.categoryService.updateCategory(categoryDto, id);
         return ResponseEntity.ok().body(updatedCategory);
     }
 

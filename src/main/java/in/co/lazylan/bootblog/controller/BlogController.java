@@ -1,7 +1,8 @@
 package in.co.lazylan.bootblog.controller;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
-import in.co.lazylan.bootblog.payload.BlogDto;
+import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
+import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -18,21 +19,21 @@ public class BlogController {
     }
 
     @PostMapping("/users/{userId}/categories/{categoryId}/blogs")
-    public ResponseEntity<BlogDto> createBlog(
-            @Valid @RequestBody BlogDto blogDto,
+    public ResponseEntity<BlogResponseDTO> createBlog(
+            @Valid @RequestBody BlogRequestDTO blogDto,
             @PathVariable String userId,
             @PathVariable String categoryId
     ) throws ResourceNotFoundException {
-        BlogDto dto = this.blogService.createBlog(blogDto, userId, categoryId);
+        BlogResponseDTO dto = this.blogService.createBlog(blogDto, userId, categoryId);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @PutMapping("/blogs/{blogId}")
-    public ResponseEntity<BlogDto> updateBlog(
-            @Valid @RequestBody BlogDto blogDto,
+    public ResponseEntity<BlogResponseDTO> updateBlog(
+            @Valid @RequestBody BlogRequestDTO blogDto,
             @PathVariable String blogId
     ) throws ResourceNotFoundException {
-        BlogDto dto = this.blogService.updateBlog(blogDto, blogId);
+        BlogResponseDTO dto = this.blogService.updateBlog(blogDto, blogId);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

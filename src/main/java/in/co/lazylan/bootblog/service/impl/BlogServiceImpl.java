@@ -4,7 +4,8 @@ import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.Blog;
 import in.co.lazylan.bootblog.model.Category;
 import in.co.lazylan.bootblog.model.User;
-import in.co.lazylan.bootblog.payload.BlogDto;
+import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
+import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.repo.BlogRepository;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
 import in.co.lazylan.bootblog.repo.UserRepository;
@@ -42,13 +43,13 @@ public class BlogServiceImpl implements BlogService {
 
         /*
         Now we create a PropertyMap to map the property. The type of the property
-        map is <BlogDto, Blog> because we want this map to be executed when the
+        map is <BlogRequestDTO, Blog> because we want this map to be executed when the
         modelmapper maps a dto object to the model object.
          */
-        PropertyMap<BlogDto, Blog> blogMap = new PropertyMap<BlogDto, Blog>() {
+        PropertyMap<BlogRequestDTO, Blog> blogMap = new PropertyMap<BlogRequestDTO, Blog>() {
             /*
             In the configure method, we use our titleToSlug converter to map the title
-            of the source (BlogDto) to the Slug of the destination (Blog)
+            of the source (BlogRequestDTO) to the Slug of the destination (Blog)
              */
             protected void configure() {
                 using(titleToSlug).map(source.getTitle()).setSlug(null);
@@ -60,7 +61,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto createBlog(BlogDto blogDto, String authorId, String categoryId) throws ResourceNotFoundException {
+    public BlogResponseDTO createBlog(BlogRequestDTO blogDto, String authorId, String categoryId) throws ResourceNotFoundException {
         // Fetching the supporting resources
         User user = this.userRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("User", "ID", authorId));
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
@@ -76,11 +77,11 @@ public class BlogServiceImpl implements BlogService {
         blog.setCategory(category);
         blog.setAuthor(user);
         blogRepository.save(blog);
-        return modelMapper.map(blog, BlogDto.class);
+        return modelMapper.map(blog, BlogResponseDTO.class);
     }
 
     @Override
-    public BlogDto updateBlog(BlogDto blogDto, String id) throws ResourceNotFoundException {
+    public BlogResponseDTO updateBlog(BlogRequestDTO blogDto, String id) throws ResourceNotFoundException {
         Blog blog = this.blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
         // Using modelmapper to map the updated title to a new slug
         Blog blogToBeUpdated = modelMapper.map(blogDto, Blog.class);
@@ -92,7 +93,7 @@ public class BlogServiceImpl implements BlogService {
         blog.setImageName(blogToBeUpdated.getImageName());
 
         Blog saved = this.blogRepository.save(blog);
-        return modelMapper.map(saved, BlogDto.class);
+        return modelMapper.map(saved, BlogResponseDTO.class);
     }
 
     @Override
@@ -101,27 +102,27 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto getBlogById(String id) {
+    public BlogResponseDTO getBlogById(String id) {
         return null;
     }
 
     @Override
-    public List<BlogDto> getAllBlogs() {
+    public List<BlogResponseDTO> getAllBlogs() {
         return List.of();
     }
 
     @Override
-    public List<BlogDto> getBlogByCategory(String id) {
+    public List<BlogResponseDTO> getBlogByCategory(String id) {
         return List.of();
     }
 
     @Override
-    public List<BlogDto> getBlogByAuthor(String id) {
+    public List<BlogResponseDTO> getBlogByAuthor(String id) {
         return List.of();
     }
 
     @Override
-    public List<BlogDto> searchBlog(String keyword) {
+    public List<BlogResponseDTO> searchBlog(String keyword) {
         return List.of();
     }
 }
