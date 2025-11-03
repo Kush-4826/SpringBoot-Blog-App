@@ -72,6 +72,12 @@ public class BlogController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @GetMapping("/blogs")
+    public ResponseEntity<List<BlogResponseDTO>> getAllBlogs() {
+        List<BlogResponseDTO> blogResponseDTOS = this.blogService.getAllBlogs();
+        return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
+    }
+
 //    @GetMapping("/blogs/{blogId}")
 //    public ResponseEntity<BlogResponseDTO> getBlogById(
 //            @PathVariable String blogId

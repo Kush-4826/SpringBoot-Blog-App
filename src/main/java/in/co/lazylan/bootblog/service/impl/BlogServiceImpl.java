@@ -122,7 +122,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogResponseDTO> getAllBlogs() {
-        return List.of();
+        List<Blog> blogs = this.blogRepository.findAll();
+        List<BlogResponseDTO> blogResponseDTOS = blogs.stream()
+                .map(blog -> modelMapper.map(blog, BlogResponseDTO.class))
+                .toList();
+        return blogResponseDTOS;
     }
 
     @Override
