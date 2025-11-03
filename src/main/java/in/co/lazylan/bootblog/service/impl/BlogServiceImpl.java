@@ -112,13 +112,31 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getBlogByCategory(String id) {
-        return List.of();
+    public List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException {
+        Category category = this.categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
+
+        List<Blog> blogs = category.getBlogs();
+        List<BlogResponseDTO> blogResponseDTOS = blogs.stream()
+                .map(blog -> this.modelMapper.map(blog, BlogResponseDTO.class))
+                .toList();
+
+        return blogResponseDTOS;
     }
 
     @Override
-    public List<BlogResponseDTO> getBlogByAuthor(String id) {
-        return List.of();
+    public List<BlogResponseDTO> getBlogByAuthor(String id) throws ResourceNotFoundException {
+        User user = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Author", "ID", id));
+
+        List<Blog> blogs = user.getBlogs();
+        List<BlogResponseDTO> blogResponseDTOS = blogs.stream()
+                .map(blog -> this.modelMapper.map(blog, BlogResponseDTO.class))
+                .toList();
+
+        return blogResponseDTOS;
     }
 
     @Override
