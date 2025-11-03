@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity(name = "users")
 @Data
 @NoArgsConstructor
@@ -25,4 +27,6 @@ public class User {
     private String gender;
     @Lob
     private String about;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Blog> blogs;
 }
