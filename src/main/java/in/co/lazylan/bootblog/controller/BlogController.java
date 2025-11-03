@@ -26,4 +26,13 @@ public class BlogController {
         BlogDto dto = this.blogService.createBlog(blogDto, userId, categoryId);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
+
+    @PutMapping("/blogs/{blogId}")
+    public ResponseEntity<BlogDto> updateBlog(
+            @Valid @RequestBody BlogDto blogDto,
+            @PathVariable String blogId
+    ) throws ResourceNotFoundException {
+        BlogDto dto = this.blogService.updateBlog(blogDto, blogId);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 }
