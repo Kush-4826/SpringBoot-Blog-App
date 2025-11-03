@@ -2,6 +2,8 @@ package in.co.lazylan.bootblog.service.impl;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.Blog;
+import in.co.lazylan.bootblog.model.Category;
+import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.BlogDto;
 import in.co.lazylan.bootblog.repo.BlogRepository;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
@@ -12,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -58,7 +61,22 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogDto createBlog(BlogDto blogDto, String authorId, String categoryId) throws ResourceNotFoundException {
-        return null;
+        // Fetching the supporting resources
+        User user = this.userRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("User", "ID", authorId));
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
+
+        Blog blog = modelMapper.map(blogDto, Blog.class);
+        // Manually setting the imagename for now
+        // TODO: Implement the Image API
+        blog.setImageName("sample.jpg");
+        // Setting the date of the blog to current date
+        blog.setCreatedDate(LocalDate.now());
+
+        // Setting the author and the category
+        blog.setCategory(category);
+        blog.setAuthor(user);
+        blogRepository.save(blog);
+        return modelMapper.map(blog, BlogDto.class);
     }
 
     @Override
