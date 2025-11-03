@@ -80,8 +80,19 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto updateBlog(BlogDto blogDto, String id) {
-        return null;
+    public BlogDto updateBlog(BlogDto blogDto, String id) throws ResourceNotFoundException {
+        Blog blog = this.blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
+        // Using modelmapper to map the updated title to a new slug
+        Blog blogToBeUpdated = modelMapper.map(blogDto, Blog.class);
+
+        // Setting the values from mapped model instead of the dto
+        blog.setTitle(blogToBeUpdated.getTitle());
+        blog.setContent(blogToBeUpdated.getContent());
+        blog.setSlug(blogToBeUpdated.getSlug());
+        blog.setImageName(blogToBeUpdated.getImageName());
+
+        Blog saved = this.blogRepository.save(blog);
+        return modelMapper.map(saved, BlogDto.class);
     }
 
     @Override

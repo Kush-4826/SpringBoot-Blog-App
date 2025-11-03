@@ -10,7 +10,7 @@ import java.util.List;
 public interface BlogService {
     BlogDto createBlog(BlogDto blogDto, String authorId, String categoryId) throws ResourceNotFoundException;
 
-    BlogDto updateBlog(BlogDto blogDto, String id);
+    BlogDto updateBlog(BlogDto blogDto, String id) throws ResourceNotFoundException;
 
     void deleteBlogById(String id);
 
