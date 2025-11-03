@@ -72,4 +72,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
         this.categoryRepository.delete(category);
     }
+
+    @Override
+    public boolean fieldValueExists(Object value, String fieldName) throws UnsupportedOperationException {
+        if (fieldName.equals("name")) {
+            return this.categoryRepository.existsByName((String) value);
+        }
+        throw new UnsupportedOperationException(fieldName + " field does not exist");
+    }
 }

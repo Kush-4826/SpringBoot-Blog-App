@@ -76,4 +76,19 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
         this.userRepository.delete(user);
     }
+
+    @Override
+    public boolean fieldValueExists(Object value, String fieldName) throws UnsupportedOperationException {
+        switch (fieldName) {
+            case "email" -> {
+                return this.userRepository.existsByEmail(value.toString());
+            }
+
+            case "username" -> {
+                return this.userRepository.existsByUsername(value.toString());
+            }
+
+            default -> throw new UnsupportedOperationException(fieldName + " field does not exist");
+        }
+    }
 }

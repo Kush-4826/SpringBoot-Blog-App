@@ -2,12 +2,13 @@ package in.co.lazylan.bootblog.service;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.CategoryDto;
+import in.co.lazylan.bootblog.util.FieldValueExists;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public interface CategoryService {
+public interface CategoryService extends FieldValueExists {
     List<CategoryDto> getAllCategories();
 
     CategoryDto getCategoryById(String id) throws ResourceNotFoundException;
