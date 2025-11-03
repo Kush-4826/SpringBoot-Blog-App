@@ -97,8 +97,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public void deleteBlogById(String id) {
-
+    public void deleteBlogById(String id) throws ResourceNotFoundException {
+        Blog blog = this.blogRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
+        this.blogRepository.delete(blog);
     }
 
     @Override

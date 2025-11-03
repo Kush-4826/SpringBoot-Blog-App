@@ -3,6 +3,7 @@ package in.co.lazylan.bootblog.controller;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
+import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -53,5 +54,13 @@ public class BlogController {
     ) throws ResourceNotFoundException {
         List<BlogResponseDTO> blogsByAuthor = this.blogService.getBlogByAuthor(userId);
         return new ResponseEntity<>(blogsByAuthor, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/blogs/{blogId}")
+    public ResponseEntity<SuccessResponse> deleteBlog(
+            @PathVariable String blogId
+    ) throws ResourceNotFoundException {
+        this.blogService.deleteBlogById(blogId);
+        return new ResponseEntity<>(new SuccessResponse("Blog deleted successfully"), HttpStatus.OK);
     }
 }

@@ -13,7 +13,7 @@ public interface BlogService {
 
     BlogResponseDTO updateBlog(BlogRequestDTO blogDto, String id) throws ResourceNotFoundException;
 
-    void deleteBlogById(String id);
+    void deleteBlogById(String id) throws ResourceNotFoundException;
 
     BlogResponseDTO getBlogById(String id);
 
