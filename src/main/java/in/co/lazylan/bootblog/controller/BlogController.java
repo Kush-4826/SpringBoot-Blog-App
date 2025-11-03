@@ -63,4 +63,20 @@ public class BlogController {
         this.blogService.deleteBlogById(blogId);
         return new ResponseEntity<>(new SuccessResponse("Blog deleted successfully"), HttpStatus.OK);
     }
+
+    @GetMapping("/blogs/{slug}")
+    public ResponseEntity<BlogResponseDTO> getBlogBySlug(
+            @PathVariable String slug
+    ) throws ResourceNotFoundException {
+        BlogResponseDTO dto = this.blogService.getBlogBySlug(slug);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+//    @GetMapping("/blogs/{blogId}")
+//    public ResponseEntity<BlogResponseDTO> getBlogById(
+//            @PathVariable String blogId
+//    ) throws ResourceNotFoundException {
+//        BlogResponseDTO dto = this.blogService.getBlogById(blogId);
+//        return new ResponseEntity<>(dto, HttpStatus.OK);
+//    }
 }

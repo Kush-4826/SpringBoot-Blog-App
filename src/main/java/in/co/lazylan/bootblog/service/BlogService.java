@@ -15,7 +15,9 @@ public interface BlogService {
 
     void deleteBlogById(String id) throws ResourceNotFoundException;
 
-    BlogResponseDTO getBlogById(String id);
+    BlogResponseDTO getBlogById(String id) throws ResourceNotFoundException;
+
+    BlogResponseDTO getBlogBySlug(String slug) throws ResourceNotFoundException;
 
     List<BlogResponseDTO> getAllBlogs();
 
