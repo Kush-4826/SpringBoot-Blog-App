@@ -3,6 +3,7 @@ package in.co.lazylan.bootblog.controller;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.BlogService;
 import jakarta.validation.Valid;
@@ -73,10 +74,10 @@ public class BlogController {
     }
 
     @GetMapping("/blogs")
-    public ResponseEntity<List<BlogResponseDTO>> getAllBlogs(
-            @RequestParam(name = "page", defaultValue = "1", required = false) int page
+    public ResponseEntity<PaginatedBlogResponseDTO> getAllBlogs(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page
     ) {
-        List<BlogResponseDTO> blogResponseDTOS = this.blogService.getAllBlogs(page - 1);
+        PaginatedBlogResponseDTO blogResponseDTOS = this.blogService.getAllBlogs(page);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
     }
 
