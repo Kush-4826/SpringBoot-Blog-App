@@ -75,9 +75,11 @@ public class BlogController {
 
     @GetMapping("/blogs")
     public ResponseEntity<PaginatedBlogResponseDTO> getAllBlogs(
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "sortBy", defaultValue = "createdDate", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order
     ) {
-        PaginatedBlogResponseDTO blogResponseDTOS = this.blogService.getAllBlogs(page);
+        PaginatedBlogResponseDTO blogResponseDTOS = this.blogService.getAllBlogs(page, sortBy, order);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
     }
 

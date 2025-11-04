@@ -17,6 +17,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -125,8 +126,15 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public PaginatedBlogResponseDTO getAllBlogs(int pageNumber) {
-        Pageable p = PageRequest.of(pageNumber, 3);
+    public PaginatedBlogResponseDTO getAllBlogs(int pageNumber, String sortBy, String order) {
+        Sort by = null;
+        if ("asc".equalsIgnoreCase(order)) {
+            by = Sort.by(sortBy).ascending();
+        } else {
+            by = Sort.by(sortBy).descending();
+        }
+
+        Pageable p = PageRequest.of(pageNumber, 3, by);
         Page<Blog> blogs = this.blogRepository.findAll(p);
         List<Blog> content = blogs.getContent();
         List<BlogResponseDTO> blogResponseDTOS = content.stream()
