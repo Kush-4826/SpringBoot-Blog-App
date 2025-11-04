@@ -19,7 +19,7 @@ public interface BlogService {
 
     BlogResponseDTO getBlogBySlug(String slug) throws ResourceNotFoundException;
 
-    List<BlogResponseDTO> getAllBlogs();
+    List<BlogResponseDTO> getAllBlogs(int pageNumber);
 
     List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException;
 

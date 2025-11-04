@@ -73,8 +73,10 @@ public class BlogController {
     }
 
     @GetMapping("/blogs")
-    public ResponseEntity<List<BlogResponseDTO>> getAllBlogs() {
-        List<BlogResponseDTO> blogResponseDTOS = this.blogService.getAllBlogs();
+    public ResponseEntity<List<BlogResponseDTO>> getAllBlogs(
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page
+    ) {
+        List<BlogResponseDTO> blogResponseDTOS = this.blogService.getAllBlogs(page - 1);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
     }
 

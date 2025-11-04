@@ -13,6 +13,9 @@ import in.co.lazylan.bootblog.service.BlogService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -121,9 +124,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getAllBlogs() {
-        List<Blog> blogs = this.blogRepository.findAll();
-        List<BlogResponseDTO> blogResponseDTOS = blogs.stream()
+    public List<BlogResponseDTO> getAllBlogs(int pageNumber) {
+        Pageable p = PageRequest.of(pageNumber, 3);
+        Page<Blog> blogs = this.blogRepository.findAll(p);
+        List<Blog> content = blogs.getContent();
+        List<BlogResponseDTO> blogResponseDTOS = content.stream()
                 .map(blog -> modelMapper.map(blog, BlogResponseDTO.class))
                 .toList();
         return blogResponseDTOS;
