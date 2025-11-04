@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,4 +28,6 @@ public class BlogResponseDTO {
     private CategoryResponseDTO category;
 
     private UserResponseDTO author;
+
+    private List<CommentResponseDTO> comments;
 }

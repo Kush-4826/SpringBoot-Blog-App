@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "blogs")
 @Data
@@ -37,4 +38,7 @@ public class Blog {
 
     @ManyToOne
     private User author;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "blog", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 }
