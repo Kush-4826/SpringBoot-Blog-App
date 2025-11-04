@@ -32,4 +32,6 @@ public class User {
     private List<Blog> blogs;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Comment> comments;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    private List<Role> roles;
 }
