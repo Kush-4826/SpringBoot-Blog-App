@@ -11,6 +11,7 @@ import in.co.lazylan.bootblog.repo.BlogRepository;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
 import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.BlogService;
+import in.co.lazylan.bootblog.util.AppConstants;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -134,7 +135,7 @@ public class BlogServiceImpl implements BlogService {
             by = Sort.by(sortBy).descending();
         }
 
-        Pageable p = PageRequest.of(pageNumber, 3, by);
+        Pageable p = PageRequest.of(pageNumber, AppConstants.DEFAULT_PAGE_SIZE, by);
         Page<Blog> blogs = this.blogRepository.findAll(p);
         List<Blog> content = blogs.getContent();
         List<BlogResponseDTO> blogResponseDTOS = content.stream()

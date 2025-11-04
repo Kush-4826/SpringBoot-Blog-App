@@ -6,6 +6,7 @@ import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.BlogService;
+import in.co.lazylan.bootblog.util.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,9 +76,12 @@ public class BlogController {
 
     @GetMapping("/blogs")
     public ResponseEntity<PaginatedBlogResponseDTO> getAllBlogs(
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "sortBy", defaultValue = "createdDate", required = false) String sortBy,
-            @RequestParam(name = "order", defaultValue = "asc", required = false) String order
+            @RequestParam(name = AppConstants.PAGE_PARAM_NAME, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)
+            int page,
+            @RequestParam(name = AppConstants.SORT_BY_PARAM_NAME, defaultValue = "createdDate", required = false)
+            String sortBy,
+            @RequestParam(name = AppConstants.ORDER_BY_PARAM_NAME, defaultValue = "asc", required = false)
+            String order
     ) {
         PaginatedBlogResponseDTO blogResponseDTOS = this.blogService.getAllBlogs(page, sortBy, order);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
@@ -85,7 +89,7 @@ public class BlogController {
 
     @GetMapping("/blogs/search")
     public ResponseEntity<List<BlogResponseDTO>> search(
-            @RequestParam(name = "q", required = true) String keyword
+            @RequestParam(name = AppConstants.SEARCH_QUERY_PARAM_NAME, required = true) String keyword
     ) {
         List<BlogResponseDTO> blogResponseDTOS = this.blogService.searchBlog(keyword);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
