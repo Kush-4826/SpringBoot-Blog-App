@@ -183,6 +183,10 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogResponseDTO> searchBlog(String keyword) {
-        return List.of();
+        List<Blog> blogs = this.blogRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
+        List<BlogResponseDTO> blogResponseDTOS = blogs.stream()
+                .map(blog -> this.modelMapper.map(blog, BlogResponseDTO.class))
+                .toList();
+        return blogResponseDTOS;
     }
 }

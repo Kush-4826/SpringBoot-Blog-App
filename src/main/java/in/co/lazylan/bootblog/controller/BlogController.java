@@ -83,6 +83,14 @@ public class BlogController {
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/blogs/search")
+    public ResponseEntity<List<BlogResponseDTO>> search(
+            @RequestParam(name = "q", required = true) String keyword
+    ) {
+        List<BlogResponseDTO> blogResponseDTOS = this.blogService.searchBlog(keyword);
+        return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
+    }
+
 //    @GetMapping("/blogs/{blogId}")
 //    public ResponseEntity<BlogResponseDTO> getBlogById(
 //            @PathVariable String blogId
