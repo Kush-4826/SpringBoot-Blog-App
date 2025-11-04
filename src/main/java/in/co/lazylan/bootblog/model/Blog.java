@@ -41,4 +41,10 @@ public class Blog {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "blog", fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    // TODO: Add Soft Deletes
+    // TODO: Add published At Date
+    // TODO: Create Tags Entity
+    // TODO: Add Tags Relationship to the Blogs
+    // TODO: Add image upload feature
 }

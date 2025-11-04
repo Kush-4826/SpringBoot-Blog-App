@@ -22,4 +22,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
+    // TODO: Adding Comment Reply Feature
+    // TODO: Adding Comment Publish Date
 }
