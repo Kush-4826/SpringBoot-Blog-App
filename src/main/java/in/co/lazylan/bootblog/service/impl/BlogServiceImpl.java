@@ -6,6 +6,7 @@ import in.co.lazylan.bootblog.model.Category;
 import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
 import in.co.lazylan.bootblog.repo.BlogRepository;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
 import in.co.lazylan.bootblog.repo.UserRepository;
@@ -124,14 +125,24 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getAllBlogs(int pageNumber) {
+    public PaginatedBlogResponseDTO getAllBlogs(int pageNumber) {
         Pageable p = PageRequest.of(pageNumber, 3);
         Page<Blog> blogs = this.blogRepository.findAll(p);
         List<Blog> content = blogs.getContent();
         List<BlogResponseDTO> blogResponseDTOS = content.stream()
                 .map(blog -> modelMapper.map(blog, BlogResponseDTO.class))
                 .toList();
-        return blogResponseDTOS;
+
+        // Creating the Paginated Response with all the pagination details
+        PaginatedBlogResponseDTO responseDTO = new PaginatedBlogResponseDTO();
+        responseDTO.setBlogs(blogResponseDTOS);
+        responseDTO.setPageNumber(blogs.getNumber());
+        responseDTO.setTotalPages(blogs.getTotalPages());
+        responseDTO.setPageSize(blogs.getSize());
+        responseDTO.setTotalElements(blogs.getTotalElements());
+        responseDTO.setLastPage(blogs.isLast());
+
+        return responseDTO;
     }
 
     @Override

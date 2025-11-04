@@ -3,6 +3,7 @@ package in.co.lazylan.bootblog.service;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface BlogService {
 
     BlogResponseDTO getBlogBySlug(String slug) throws ResourceNotFoundException;
 
-    List<BlogResponseDTO> getAllBlogs(int pageNumber);
+    PaginatedBlogResponseDTO getAllBlogs(int pageNumber);
 
     List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException;
 
