@@ -67,4 +67,6 @@ public class AuthController {
         UserResponseDTO user = this.userService.createUser(userDto);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
+    // TODO: rewrite the Auth System with Role Based Access Control
 }
