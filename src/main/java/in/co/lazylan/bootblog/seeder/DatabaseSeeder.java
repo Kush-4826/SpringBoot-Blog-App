@@ -102,8 +102,10 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<Blog> blogs = new ArrayList<>();
         for (int i = 0; i < 1000; ++i) {
             Blog blog = new Blog();
-            blog.setTitle(faker.book().title());
-            blog.setSlug(faker.lorem().characters(8, 16, true));
+            String title = faker.book().title();
+            String slug = title.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+            blog.setTitle(title);
+            blog.setSlug(slug);
             blog.setContent(faker.lorem().paragraph(5));
             blog.setImageName("default.jpg");
             blog.setCreatedDate(LocalDateTime.now().minusDays(faker.random().nextInt(0, 365)));
