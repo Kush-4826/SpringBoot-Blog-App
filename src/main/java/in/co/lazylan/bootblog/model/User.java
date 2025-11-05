@@ -19,8 +19,8 @@ import java.util.Set;
 @ToString
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)

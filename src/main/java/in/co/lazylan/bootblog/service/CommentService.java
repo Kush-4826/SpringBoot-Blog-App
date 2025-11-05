@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public interface CommentService {
     CommentResponseDTO createComment(CommentRequestDTO comment) throws ResourceNotFoundException;
 
-    void deleteComment(String commentId) throws ResourceNotFoundException;
+    void deleteComment(int commentId) throws ResourceNotFoundException;
 }

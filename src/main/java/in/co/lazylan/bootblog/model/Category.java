@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(unique = true, nullable = false)
     private String name;
     private String description;

@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updateUser(UserRequestDTO userDto, String id) throws ResourceNotFoundException {
+    public UserResponseDTO updateUser(UserRequestDTO userDto, int id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUserById(String id) throws ResourceNotFoundException {
+    public UserResponseDTO getUserById(int id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(String id) throws ResourceNotFoundException {
+    public void deleteUserById(int id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));

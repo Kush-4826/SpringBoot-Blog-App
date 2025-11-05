@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UserResponseDTO {
-    private String id;
+    private int id;
     private String username;
     private String email;
     private String gender;

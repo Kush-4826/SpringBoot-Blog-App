@@ -31,13 +31,13 @@ public class UserController {
 //    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userDto, @PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userDto, @PathVariable int id) throws ResourceNotFoundException {
         UserResponseDTO updatedUser = this.userServiceImpl.updateUser(userDto, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<?> delete(@PathVariable int id) throws ResourceNotFoundException {
         this.userServiceImpl.deleteUserById(id);
         return new ResponseEntity<>(
                 new SuccessResponse("User with id " + id + " Deleted Successfully"),
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> show(@PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<UserResponseDTO> show(@PathVariable int id) throws ResourceNotFoundException {
         UserResponseDTO user = this.userServiceImpl.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

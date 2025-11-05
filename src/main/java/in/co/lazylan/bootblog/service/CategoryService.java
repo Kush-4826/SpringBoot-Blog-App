@@ -12,13 +12,13 @@ import java.util.List;
 public interface CategoryService extends FieldValueExists {
     List<CategoryResponseDTO> getAllCategories();
 
-    CategoryResponseDTO getCategoryById(String id) throws ResourceNotFoundException;
+    CategoryResponseDTO getCategoryById(int id) throws ResourceNotFoundException;
 
     CategoryResponseDTO getCategoryByName(String name) throws ResourceNotFoundException;
 
     CategoryResponseDTO createCategory(CategoryRequestDTO categoryDto);
 
-    CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, String id) throws ResourceNotFoundException;
+    CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, int id) throws ResourceNotFoundException;
 
-    void deleteCategoryById(String id) throws ResourceNotFoundException;
+    void deleteCategoryById(int id) throws ResourceNotFoundException;
 }

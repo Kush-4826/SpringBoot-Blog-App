@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Blog {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(nullable = false)
     private String title;

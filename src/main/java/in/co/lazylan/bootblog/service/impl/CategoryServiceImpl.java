@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDTO getCategoryById(String id) throws ResourceNotFoundException {
+    public CategoryResponseDTO getCategoryById(int id) throws ResourceNotFoundException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, String id) throws ResourceNotFoundException {
+    public CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, int id) throws ResourceNotFoundException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategoryById(String id) throws ResourceNotFoundException {
+    public void deleteCategoryById(int id) throws ResourceNotFoundException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));

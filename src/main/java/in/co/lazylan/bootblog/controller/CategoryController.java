@@ -30,7 +30,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> show(@PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<CategoryResponseDTO> show(@PathVariable int id) throws ResourceNotFoundException {
         CategoryResponseDTO categoryById = this.categoryService.getCategoryById(id);
         return ResponseEntity.ok().body(categoryById);
     }
@@ -42,13 +42,13 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> update(@PathVariable String id, @Valid @RequestBody CategoryRequestDTO categoryDto) throws ResourceNotFoundException {
+    public ResponseEntity<CategoryResponseDTO> update(@PathVariable int id, @Valid @RequestBody CategoryRequestDTO categoryDto) throws ResourceNotFoundException {
         CategoryResponseDTO updatedCategory = this.categoryService.updateCategory(categoryDto, id);
         return ResponseEntity.ok().body(updatedCategory);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse> delete(@PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<SuccessResponse> delete(@PathVariable int id) throws ResourceNotFoundException {
         this.categoryService.deleteCategoryById(id);
         return new ResponseEntity<>(
                 new SuccessResponse("Category has been deleted successfully"),

@@ -10,21 +10,21 @@ import java.util.List;
 
 @Service
 public interface BlogService {
-    BlogResponseDTO createBlog(BlogRequestDTO blogDto, String authorId, String categoryId) throws ResourceNotFoundException;
+    BlogResponseDTO createBlog(BlogRequestDTO blogDto, int authorId, int categoryId) throws ResourceNotFoundException;
 
-    BlogResponseDTO updateBlog(BlogRequestDTO blogDto, String id) throws ResourceNotFoundException;
+    BlogResponseDTO updateBlog(BlogRequestDTO blogDto, int id) throws ResourceNotFoundException;
 
-    void deleteBlogById(String id) throws ResourceNotFoundException;
+    void deleteBlogById(int id) throws ResourceNotFoundException;
 
-    BlogResponseDTO getBlogById(String id) throws ResourceNotFoundException;
+    BlogResponseDTO getBlogById(int id) throws ResourceNotFoundException;
 
     BlogResponseDTO getBlogBySlug(String slug) throws ResourceNotFoundException;
 
     PaginatedBlogResponseDTO getAllBlogs(int pageNumber, String sortBy, String order);
 
-    List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException;
+    List<BlogResponseDTO> getBlogsByCategory(int id) throws ResourceNotFoundException;
 
-    List<BlogResponseDTO> getBlogByAuthor(String id) throws ResourceNotFoundException;
+    List<BlogResponseDTO> getBlogByAuthor(int id) throws ResourceNotFoundException;
 
     List<BlogResponseDTO> searchBlog(String keyword);
 }

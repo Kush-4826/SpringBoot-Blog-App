@@ -26,8 +26,8 @@ public class BlogController {
     @PostMapping("/users/{userId}/categories/{categoryId}/blogs")
     public ResponseEntity<BlogResponseDTO> createBlog(
             @Valid @RequestBody BlogRequestDTO blogDto,
-            @PathVariable String userId,
-            @PathVariable String categoryId
+            @PathVariable int userId,
+            @PathVariable int categoryId
     ) throws ResourceNotFoundException {
         BlogResponseDTO dto = this.blogService.createBlog(blogDto, userId, categoryId);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
@@ -36,7 +36,7 @@ public class BlogController {
     @PutMapping("/blogs/{blogId}")
     public ResponseEntity<BlogResponseDTO> updateBlog(
             @Valid @RequestBody BlogRequestDTO blogDto,
-            @PathVariable String blogId
+            @PathVariable int blogId
     ) throws ResourceNotFoundException {
         BlogResponseDTO dto = this.blogService.updateBlog(blogDto, blogId);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -44,7 +44,7 @@ public class BlogController {
 
     @GetMapping("/categories/{categoryId}/blogs")
     public ResponseEntity<List<BlogResponseDTO>> getBlogsByCategory(
-            @PathVariable String categoryId
+            @PathVariable int categoryId
     ) throws ResourceNotFoundException {
         List<BlogResponseDTO> blogsByCategory = this.blogService.getBlogsByCategory(categoryId);
         return new ResponseEntity<>(blogsByCategory, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class BlogController {
 
     @GetMapping("/users/{userId}/blogs")
     public ResponseEntity<List<BlogResponseDTO>> getBlogsByAuthor(
-            @PathVariable String userId
+            @PathVariable int userId
     ) throws ResourceNotFoundException {
         List<BlogResponseDTO> blogsByAuthor = this.blogService.getBlogByAuthor(userId);
         return new ResponseEntity<>(blogsByAuthor, HttpStatus.OK);
@@ -60,7 +60,7 @@ public class BlogController {
 
     @DeleteMapping("/blogs/{blogId}")
     public ResponseEntity<SuccessResponse> deleteBlog(
-            @PathVariable String blogId
+            @PathVariable int blogId
     ) throws ResourceNotFoundException {
         this.blogService.deleteBlogById(blogId);
         return new ResponseEntity<>(new SuccessResponse("Blog deleted successfully"), HttpStatus.OK);

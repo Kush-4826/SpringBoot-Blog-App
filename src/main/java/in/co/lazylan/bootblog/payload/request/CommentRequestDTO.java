@@ -17,8 +17,8 @@ public class CommentRequestDTO {
     private String content;
 
     @NotBlank(message = "User ID is required")
-    private String userId;
+    private int userId;
 
     @NotBlank(message = "Blog ID is required")
-    private String blogId;
+    private int blogId;
 }

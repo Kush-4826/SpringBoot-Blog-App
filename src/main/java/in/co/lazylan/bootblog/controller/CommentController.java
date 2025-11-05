@@ -29,7 +29,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<SuccessResponse> delete(
-            @PathVariable String commentId
+            @PathVariable int commentId
     ) throws ResourceNotFoundException {
         this.commentService.deleteComment(commentId);
         return new ResponseEntity<>(new SuccessResponse("Comment Deleted Successfully"), HttpStatus.OK);

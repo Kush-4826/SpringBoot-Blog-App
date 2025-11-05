@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class BlogResponseDTO {
-    private String id;
+    private int id;
 
     private String title;
 

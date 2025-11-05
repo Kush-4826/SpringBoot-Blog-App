@@ -12,13 +12,13 @@ import java.util.List;
 public interface UserService extends FieldValueExists {
     UserResponseDTO createUser(UserRequestDTO userDto);
 
-    UserResponseDTO updateUser(UserRequestDTO userDto, String id) throws ResourceNotFoundException;
+    UserResponseDTO updateUser(UserRequestDTO userDto, int id) throws ResourceNotFoundException;
 
-    UserResponseDTO getUserById(String id) throws ResourceNotFoundException;
+    UserResponseDTO getUserById(int id) throws ResourceNotFoundException;
 
     UserResponseDTO getUserByEmail(String email) throws ResourceNotFoundException;
 
     List<UserResponseDTO> getAllUsers();
 
-    void deleteUserById(String id) throws ResourceNotFoundException;
+    void deleteUserById(int id) throws ResourceNotFoundException;
 }

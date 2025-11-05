@@ -10,6 +10,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CommentResponseDTO {
-    private String id;
+    private int id;
     private String content;
 }

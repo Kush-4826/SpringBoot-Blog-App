@@ -67,7 +67,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogResponseDTO createBlog(BlogRequestDTO blogDto, String authorId, String categoryId) throws ResourceNotFoundException {
+    public BlogResponseDTO createBlog(BlogRequestDTO blogDto, int authorId, int categoryId) throws ResourceNotFoundException {
         // Fetching the supporting resources
         User user = this.userRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("User", "ID", authorId));
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
@@ -87,7 +87,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogResponseDTO updateBlog(BlogRequestDTO blogDto, String id) throws ResourceNotFoundException {
+    public BlogResponseDTO updateBlog(BlogRequestDTO blogDto, int id) throws ResourceNotFoundException {
         Blog blog = this.blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
         // Using modelmapper to map the updated title to a new slug
         Blog blogToBeUpdated = modelMapper.map(blogDto, Blog.class);
@@ -103,7 +103,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public void deleteBlogById(String id) throws ResourceNotFoundException {
+    public void deleteBlogById(int id) throws ResourceNotFoundException {
         Blog blog = this.blogRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
@@ -111,7 +111,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogResponseDTO getBlogById(String id) throws ResourceNotFoundException {
+    public BlogResponseDTO getBlogById(int id) throws ResourceNotFoundException {
         Blog blog = this.blogRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", id));
@@ -155,7 +155,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getBlogsByCategory(String id) throws ResourceNotFoundException {
+    public List<BlogResponseDTO> getBlogsByCategory(int id) throws ResourceNotFoundException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
@@ -169,7 +169,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getBlogByAuthor(String id) throws ResourceNotFoundException {
+    public List<BlogResponseDTO> getBlogByAuthor(int id) throws ResourceNotFoundException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Author", "ID", id));
