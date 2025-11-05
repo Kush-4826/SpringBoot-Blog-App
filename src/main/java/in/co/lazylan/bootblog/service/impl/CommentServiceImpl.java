@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -45,6 +47,7 @@ public class CommentServiceImpl implements CommentService {
         Comment currentComment = this.modelMapper.map(comment, Comment.class);
         currentComment.setUser(currentUser);
         currentComment.setBlog(currentBlog);
+        currentComment.setPublishedAt(LocalDateTime.now());
 
         Comment saved = this.commentRepository.save(currentComment);
         return this.modelMapper.map(saved, CommentResponseDTO.class);

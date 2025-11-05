@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "comments")
 @Data
 @AllArgsConstructor
@@ -17,6 +19,9 @@ public class Comment {
     @Column(columnDefinition = "text")
     private String content;
 
+    @Column(nullable = false)
+    LocalDateTime publishedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Blog blog;
 
@@ -24,5 +29,4 @@ public class Comment {
     private User user;
 
     // TODO: Adding Comment Reply Feature
-    // TODO: Adding Comment Publish Date
 }

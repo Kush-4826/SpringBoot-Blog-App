@@ -122,6 +122,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 comm.setContent(faker.lorem().sentence());
                 comm.setBlog(blog);
                 comm.setUser(faker.options().nextElement(users));
+                comm.setPublishedAt(LocalDateTime.now().minusDays(faker.random().nextInt(0, 365)));
                 comments.add(comm);
             }
         }
