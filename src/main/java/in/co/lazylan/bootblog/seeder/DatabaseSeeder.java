@@ -93,17 +93,14 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         userRepo.saveAll(users);
 
-//        // Add users to roles for bi-directional relationship
-//        adminRole.setUsers(List.of(admin));
-//        userRole.setUsers(users);
-//        roleRepo.saveAll(List.of(adminRole, userRole));
-
         // 4. Blogs - 1000
         List<Blog> blogs = new ArrayList<>();
-        for (int i = 0; i < 1000; ++i) {
+        for (int i = 0; i < 10; ++i) {
             Blog blog = new Blog();
-            blog.setTitle(faker.book().title());
-            blog.setSlug(faker.lorem().characters(8, 16, true));
+            String title = faker.lorem().sentence(faker.random().nextInt(2, 8));
+            String slug = title.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+            blog.setTitle(title);
+            blog.setSlug(slug);
             blog.setContent(faker.lorem().paragraph(5));
             blog.setImageName("default.jpg");
             blog.setCreatedDate(LocalDateTime.now().minusDays(faker.random().nextInt(0, 365)));
@@ -125,15 +122,6 @@ public class DatabaseSeeder implements CommandLineRunner {
                 comm.setPublishedAt(LocalDateTime.now().minusDays(faker.random().nextInt(0, 365)));
                 comments.add(comm);
             }
-        }
-        // Ensure at least 10,000 comments (possible overspill)
-        while (comments.size() < 10000) {
-            Blog blog = faker.options().nextElement(blogs);
-            Comment comm = new Comment();
-            comm.setContent(faker.lorem().sentence());
-            comm.setBlog(blog);
-            comm.setUser(faker.options().nextElement(users));
-            comments.add(comm);
         }
         commentRepo.saveAll(comments);
 
