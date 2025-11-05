@@ -69,4 +69,5 @@ public class AuthController {
     }
 
     // TODO: rewrite the Auth System with Role Based Access Control
+    // TODO: Add Full Refresh Token functionality
 }
