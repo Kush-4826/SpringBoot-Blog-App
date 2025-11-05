@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class BlogController {
+public class BlogController extends ApiController {
     private final BlogService blogService;
 
     public BlogController(BlogService blogService) {

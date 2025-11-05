@@ -19,11 +19,6 @@ public class Role {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "role_user",
-            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
     private List<User> users;
 }
