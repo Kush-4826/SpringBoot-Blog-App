@@ -4,6 +4,7 @@ import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.PaginatedCommentsResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.BlogService;
 import in.co.lazylan.bootblog.util.AppConstants;
@@ -93,6 +94,16 @@ public class BlogController extends ApiController {
     ) {
         List<BlogResponseDTO> blogResponseDTOS = this.blogService.searchBlog(keyword);
         return new ResponseEntity<>(blogResponseDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/blogs/{blogId}/comments")
+    public ResponseEntity<PaginatedCommentsResponseDTO> getComments(
+            @PathVariable int blogId,
+            @RequestParam(name = AppConstants.PAGE_PARAM_NAME, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)
+            int page
+    ) throws ResourceNotFoundException {
+        PaginatedCommentsResponseDTO responseDTO = this.blogService.getCommentsForBlog(blogId, page);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
 //    @GetMapping("/blogs/{blogId}")
