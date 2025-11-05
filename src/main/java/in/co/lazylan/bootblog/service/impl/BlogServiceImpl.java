@@ -3,12 +3,16 @@ package in.co.lazylan.bootblog.service.impl;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.Blog;
 import in.co.lazylan.bootblog.model.Category;
+import in.co.lazylan.bootblog.model.Comment;
 import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.CommentResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
+import in.co.lazylan.bootblog.payload.response.PaginatedCommentsResponseDTO;
 import in.co.lazylan.bootblog.repo.BlogRepository;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
+import in.co.lazylan.bootblog.repo.CommentRepository;
 import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.BlogService;
 import in.co.lazylan.bootblog.util.AppConstants;
@@ -31,8 +35,9 @@ public class BlogServiceImpl implements BlogService {
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
-    public BlogServiceImpl(BlogRepository blogRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository) {
+    public BlogServiceImpl(BlogRepository blogRepository, ModelMapper modelMapper, CategoryRepository categoryRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.blogRepository = blogRepository;
         this.modelMapper = modelMapper;
         this.categoryRepository = categoryRepository;
@@ -64,6 +69,7 @@ public class BlogServiceImpl implements BlogService {
 
         // Finally we add this property map to the modelmapper
         this.modelMapper.addMappings(blogMap);
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -189,5 +195,26 @@ public class BlogServiceImpl implements BlogService {
                 .map(blog -> this.modelMapper.map(blog, BlogResponseDTO.class))
                 .toList();
         return blogResponseDTOS;
+    }
+
+    @Override
+    public PaginatedCommentsResponseDTO getCommentsForBlog(int blogId, int page) throws ResourceNotFoundException {
+        Blog blog = this.blogRepository.findById(blogId).orElseThrow(() -> new ResourceNotFoundException("Blog", "ID", blogId));
+        Pageable p = PageRequest.of(page, AppConstants.DEFAULT_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "publishedAt"));
+        Page<Comment> commentPage = this.commentRepository.findByBlog(blog, p);
+        List<Comment> comments = commentPage.getContent();
+        List<CommentResponseDTO> commentResponseDTOS = comments.stream()
+                .map(comment -> this.modelMapper.map(comment, CommentResponseDTO.class))
+                .toList();
+
+        PaginatedCommentsResponseDTO responseDTO = new PaginatedCommentsResponseDTO();
+        responseDTO.setComments(commentResponseDTOS);
+        responseDTO.setPageNumber(commentPage.getNumber());
+        responseDTO.setTotalPages(commentPage.getTotalPages());
+        responseDTO.setPageSize(commentPage.getSize());
+        responseDTO.setTotalElements(commentPage.getTotalElements());
+        responseDTO.setLastPage(commentPage.isLast());
+
+        return responseDTO;
     }
 }
