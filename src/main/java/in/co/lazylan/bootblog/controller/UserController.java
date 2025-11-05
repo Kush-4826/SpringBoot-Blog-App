@@ -24,11 +24,11 @@ public class UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @PostMapping("")
-    public ResponseEntity<UserResponseDTO> store(@Valid @RequestBody UserRequestDTO userDto) {
-        UserResponseDTO user = this.userServiceImpl.createUser(userDto);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
+//    @PostMapping("")
+//    public ResponseEntity<UserResponseDTO> store(@Valid @RequestBody UserRequestDTO userDto) {
+//        UserResponseDTO user = this.userServiceImpl.createUser(userDto);
+//        return new ResponseEntity<>(user, HttpStatus.CREATED);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> update(@Valid @RequestBody UserRequestDTO userDto, @PathVariable String id) throws ResourceNotFoundException {

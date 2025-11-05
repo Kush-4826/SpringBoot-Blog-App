@@ -8,6 +8,7 @@ import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,17 +17,20 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository) {
+    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO userDto) {
         User user = modelMapper.map(userDto, User.class);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User savedUser = this.userRepository.save(user);
         return modelMapper.map(savedUser, UserResponseDTO.class);
     }
