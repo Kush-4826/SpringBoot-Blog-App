@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +106,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             blog.setSlug(faker.lorem().characters(8, 16, true));
             blog.setContent(faker.lorem().paragraph(5));
             blog.setImageName("default.jpg");
-            blog.setCreatedDate(LocalDate.now().minusDays(faker.random().nextInt(0, 365)));
+            blog.setCreatedDate(LocalDateTime.now().minusDays(faker.random().nextInt(0, 365)));
             blog.setCategory(faker.options().nextElement(categories));
             blog.setAuthor(faker.options().nextElement(users));
             blogs.add(blog);

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "blogs")
@@ -29,9 +29,8 @@ public class Blog {
     @Column(nullable = false)
     private String imageName;
 
-    // TODO: Convert to LocalDateTime
     @Column(nullable = false)
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @ManyToOne
     private Category category;

@@ -21,7 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -77,7 +77,7 @@ public class BlogServiceImpl implements BlogService {
         // TODO: Implement the Image API
         blog.setImageName("sample.jpg");
         // Setting the date of the blog to current date
-        blog.setCreatedDate(LocalDate.now());
+        blog.setCreatedDate(LocalDateTime.now());
 
         // Setting the author and the category
         blog.setCategory(category);
