@@ -1,8 +1,15 @@
 package in.co.lazylan.bootblog.seeder;
 
 import com.github.javafaker.Faker;
-import in.co.lazylan.bootblog.model.*;
-import in.co.lazylan.bootblog.repo.*;
+import in.co.lazylan.bootblog.model.Blog;
+import in.co.lazylan.bootblog.model.Category;
+import in.co.lazylan.bootblog.model.Comment;
+import in.co.lazylan.bootblog.model.User;
+import in.co.lazylan.bootblog.repo.BlogRepository;
+import in.co.lazylan.bootblog.repo.CategoryRepository;
+import in.co.lazylan.bootblog.repo.CommentRepository;
+import in.co.lazylan.bootblog.repo.UserRepository;
+import in.co.lazylan.bootblog.types.RoleType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -20,7 +28,6 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final BlogRepository blogRepo;
     private final CategoryRepository categoryRepo;
     private final CommentRepository commentRepo;
-    private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${app.seed.enabled:false}")
@@ -29,12 +36,11 @@ public class DatabaseSeeder implements CommandLineRunner {
     public DatabaseSeeder(UserRepository userRepo, BlogRepository blogRepo,
                           CategoryRepository categoryRepo,
                           CommentRepository commentRepo,
-                          RoleRepository roleRepo, PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.blogRepo = blogRepo;
         this.categoryRepo = categoryRepo;
         this.commentRepo = commentRepo;
-        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -45,19 +51,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         if (userRepo.count() > 0
                 || blogRepo.count() > 0
                 || categoryRepo.count() > 0
-                || commentRepo.count() > 0
-                || roleRepo.count() > 0) return;
+                || commentRepo.count() > 0) return;
 
         Faker faker = new Faker();
-
-        // 1. Roles
-        Role adminRole = new Role();
-        adminRole.setName("ADMIN");
-        adminRole.setUsers(new ArrayList<>());
-        Role userRole = new Role();
-        userRole.setName("USER");
-        userRole.setUsers(new ArrayList<>());
-        roleRepo.saveAll(List.of(adminRole, userRole));
 
         // 2. Categories - 10
         List<Category> categories = new ArrayList<>();
@@ -79,7 +75,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             user.setEmail(faker.internet().emailAddress());
             user.setGender(faker.options().option("Male", "Female", "Other"));
             user.setAbout(faker.lorem().paragraph());
-            user.setRoles(List.of(userRole));
+            user.setRoles(Set.of(RoleType.AUTHOR));
             users.add(user);
         }
         User admin = new User();
@@ -88,7 +84,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         admin.setEmail("admin@example.com");
         admin.setGender("Other");
         admin.setAbout("The admin user for bootblog.");
-        admin.setRoles(List.of(adminRole, userRole));
+        admin.setRoles(Set.of(RoleType.ADMIN));
         users.add(admin);
 
         userRepo.saveAll(users);
