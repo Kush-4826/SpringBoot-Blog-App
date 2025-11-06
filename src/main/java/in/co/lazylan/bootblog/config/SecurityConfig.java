@@ -3,6 +3,7 @@ package in.co.lazylan.bootblog.config;
 import in.co.lazylan.bootblog.security.CustomUserDetailService;
 import in.co.lazylan.bootblog.security.JwtAuthenticationEntryPoint;
 import in.co.lazylan.bootblog.security.JwtAuthenticationFilter;
+import in.co.lazylan.bootblog.types.RoleType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +46,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/api/users/**").authenticated()
+                                auth.requestMatchers("/api/users/**").hasRole(RoleType.ADMIN.name())
                                         .requestMatchers("/api/auth/login").permitAll()
                                         .requestMatchers("/api/auth/register").permitAll()
                                         .anyRequest().authenticated()
