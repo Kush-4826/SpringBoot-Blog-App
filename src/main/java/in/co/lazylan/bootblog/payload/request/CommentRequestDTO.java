@@ -16,9 +16,6 @@ public class CommentRequestDTO {
     @NotBlank(message = "Comment cannot be blank")
     private String content;
 
-    @NotBlank(message = "User ID is required")
-    private int userId;
-
     @NotBlank(message = "Blog ID is required")
     private int blogId;
 }
