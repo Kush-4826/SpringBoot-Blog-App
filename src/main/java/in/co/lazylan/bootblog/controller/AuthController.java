@@ -68,6 +68,5 @@ public class AuthController extends ApiController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    // TODO: rewrite the Auth System with Role Based Access Control
     // TODO: Add Full Refresh Token functionality
 }
