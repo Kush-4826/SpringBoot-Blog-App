@@ -12,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+
+import static in.co.lazylan.bootblog.types.RoleType.AUTHOR;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO createUser(UserRequestDTO userDto) {
         User user = modelMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRoles(Set.of(AUTHOR));
         User savedUser = this.userRepository.save(user);
         return modelMapper.map(savedUser, UserResponseDTO.class);
     }
