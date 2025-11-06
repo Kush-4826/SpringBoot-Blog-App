@@ -8,12 +8,14 @@ import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
+import static in.co.lazylan.bootblog.types.RoleType.ADMIN;
 import static in.co.lazylan.bootblog.types.RoleType.AUTHOR;
 
 @Service
@@ -40,7 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updateUser(UserRequestDTO userDto, int id) throws ResourceNotFoundException {
+    public UserResponseDTO updateUser(UserRequestDTO userDto, int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+        if (!authUser.isAdmin() && id != authUser.getId()) throw new AccessDeniedException("Access denied");
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
@@ -54,7 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUserById(int id) throws ResourceNotFoundException {
+    public UserResponseDTO getUserById(int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+        if (id == authUser.getId()) return this.modelMapper.map(authUser, UserResponseDTO.class);
+        if (!authUser.isAdmin()) throw new AccessDeniedException("Access denied");
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
@@ -70,7 +75,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers(User authUser) throws AccessDeniedException {
+        if (!authUser.isAdmin()) throw new AccessDeniedException("Access denied");
         List<User> users = this.userRepository.findAll();
         List<UserResponseDTO> userDtos = users.stream()
                 .map((user) -> this.modelMapper.map(user, UserResponseDTO.class))
@@ -79,11 +85,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(int id) throws ResourceNotFoundException {
+    public void deleteUserById(int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+        if (!authUser.isAdmin() && id != authUser.getId()) throw new AccessDeniedException("Access denied");
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public void promoteAuthorToAdmin(int userId, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+        if (!authUser.isAdmin()) throw new AccessDeniedException("Access denied");
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", userId));
+
+        user.getRoles().add(ADMIN);
+        user.getRoles().remove(AUTHOR);
+        this.userRepository.save(user);
+    }
+
+    @Override
+    public void demoteAdminToAuthor(int userId, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+        if (!authUser.isAdmin() || authUser.getId() == userId) throw new AccessDeniedException("Access denied");
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", userId));
+
+        user.getRoles().add(AUTHOR);
+        user.getRoles().remove(ADMIN);
+        this.userRepository.save(user);
     }
 
     @Override
