@@ -2,12 +2,14 @@ package in.co.lazylan.bootblog.service.impl;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.Category;
+import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.CategoryRequestDTO;
 import in.co.lazylan.bootblog.payload.response.CategoryResponseDTO;
 import in.co.lazylan.bootblog.repo.CategoryRepository;
 import in.co.lazylan.bootblog.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,17 +51,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDTO createCategory(CategoryRequestDTO categoryDto) {
+    public CategoryResponseDTO createCategory(CategoryRequestDTO categoryDto, User user) throws AccessDeniedException {
         Category category = this.modelMapper.map(categoryDto, Category.class);
+        if (!user.isAdmin()) throw new AccessDeniedException("Only Admins Can Create a Category");
         Category savedCategory = this.categoryRepository.save(category);
         return this.modelMapper.map(savedCategory, CategoryResponseDTO.class);
     }
 
     @Override
-    public CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, int id) throws ResourceNotFoundException {
+    public CategoryResponseDTO updateCategory(CategoryRequestDTO categoryDto, int id, User user) throws ResourceNotFoundException, AccessDeniedException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
+        if (!user.isAdmin()) throw new AccessDeniedException("Only Admins Can Update a Category");
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
         Category savedCategory = this.categoryRepository.save(category);
@@ -67,10 +71,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategoryById(int id) throws ResourceNotFoundException {
+    public void deleteCategoryById(int id, User user) throws ResourceNotFoundException, AccessDeniedException {
         Category category = this.categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", id));
+        if (!user.isAdmin()) throw new AccessDeniedException("Only Admins Can Delete Category");
         this.categoryRepository.delete(category);
     }
 
