@@ -60,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
         // Normal User can delete only his own comments
         // Admin can delete anyone's comments
         if (!user.isAdmin() && comment.getUser().getId() != user.getId()) {
-            throw new AccessDeniedException("Access Denied");
+            throw new AccessDeniedException("You cannot delete the comment as you do not own it!");
         }
 
         this.commentRepository.delete(comment);
