@@ -9,9 +9,9 @@ import in.co.lazylan.bootblog.payload.response.CommentResponseDTO;
 import in.co.lazylan.bootblog.repo.CommentRepository;
 import in.co.lazylan.bootblog.service.BlogService;
 import in.co.lazylan.bootblog.service.CommentService;
-import in.co.lazylan.bootblog.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,13 +19,11 @@ import java.time.LocalDateTime;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final UserService userService;
     private final ModelMapper modelMapper;
     private final BlogService blogService;
     private final CommentRepository commentRepository;
 
-    public CommentServiceImpl(UserService userService, ModelMapper modelMapper, BlogService blogService, CommentRepository commentRepository) {
-        this.userService = userService;
+    public CommentServiceImpl(ModelMapper modelMapper, BlogService blogService, CommentRepository commentRepository) {
         this.modelMapper = modelMapper;
         this.blogService = blogService;
         this.commentRepository = commentRepository;
@@ -40,12 +38,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponseDTO createComment(CommentRequestDTO comment) throws ResourceNotFoundException {
-        User currentUser = this.modelMapper.map(this.userService.getUserById(comment.getUserId()), User.class);
+    public CommentResponseDTO createComment(CommentRequestDTO comment, User user) throws ResourceNotFoundException {
         Blog currentBlog = this.modelMapper.map(this.blogService.getBlogById(comment.getBlogId()), Blog.class);
 
         Comment currentComment = this.modelMapper.map(comment, Comment.class);
-        currentComment.setUser(currentUser);
+        currentComment.setUser(user);
         currentComment.setBlog(currentBlog);
         currentComment.setPublishedAt(LocalDateTime.now());
 
@@ -54,10 +51,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int commentId) throws ResourceNotFoundException {
+    public void deleteComment(int commentId, User user) throws ResourceNotFoundException, AccessDeniedException {
         Comment comment = this.commentRepository
                 .findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment", "ID", commentId));
+
+
+        // Normal User can delete only his own comments
+        // Admin can delete anyone's comments
+        if (!user.isAdmin() && comment.getUser().getId() != user.getId()) {
+            throw new AccessDeniedException("Access Denied");
+        }
 
         this.commentRepository.delete(comment);
     }
