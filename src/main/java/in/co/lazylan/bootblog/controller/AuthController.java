@@ -89,6 +89,4 @@ public class AuthController extends ApiController {
     ) {
         return new ResponseEntity<>(this.modelMapper.map(user, UserResponseDTO.class), HttpStatus.OK);
     }
-
-    // TODO: Add Full Refresh Token functionality
 }
