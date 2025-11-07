@@ -52,6 +52,7 @@ public class SecurityConfig {
                                         // Auth Routes
                                         .requestMatchers("/api/auth/login").permitAll()
                                         .requestMatchers("/api/auth/register").permitAll()
+                                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
