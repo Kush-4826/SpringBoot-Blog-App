@@ -2,7 +2,7 @@ package in.co.lazylan.bootblog.controller;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.User;
-import in.co.lazylan.bootblog.payload.request.UserRequestDTO;
+import in.co.lazylan.bootblog.payload.request.UserUpdateRequestDTO;
 import in.co.lazylan.bootblog.payload.response.UserResponseDTO;
 import in.co.lazylan.bootblog.response.SuccessResponse;
 import in.co.lazylan.bootblog.service.UserService;
@@ -29,7 +29,7 @@ public class UserController extends ApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> update(
-            @Valid @RequestBody UserRequestDTO userDto,
+            @Valid @RequestBody UserUpdateRequestDTO userDto,
             @PathVariable int id,
             @AuthenticationPrincipal User user
     ) throws ResourceNotFoundException, AccessDeniedException {
