@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 public class UserResponseDTO {
     private int id;
-    private String username;
+    private String name;
     private String email;
     private String gender;
     private String about;

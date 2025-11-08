@@ -24,8 +24,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true, nullable = false)
-    private String username;
+    @Column(unique = true, nullable = false, name = "username")
+    private String name;
     @Column(nullable = false)
     private String password;
     @Column(unique = true, nullable = false)
@@ -50,6 +50,11 @@ public class User implements UserDetails {
         return this.roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public boolean isAdmin() {

@@ -10,6 +10,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class JwtRequestDTO {
-    private String username;
+    private String email;
     private String password;
 }

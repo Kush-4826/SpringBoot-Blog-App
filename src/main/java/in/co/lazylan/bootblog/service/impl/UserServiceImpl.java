@@ -124,8 +124,8 @@ public class UserServiceImpl implements UserService {
                 return this.userRepository.existsByEmail(value.toString());
             }
 
-            case "username" -> {
-                return this.userRepository.existsByUsername(value.toString());
+            case "name" -> {
+                return this.userRepository.existsByName(value.toString());
             }
 
             default -> throw new UnsupportedOperationException(fieldName + " field does not exist");

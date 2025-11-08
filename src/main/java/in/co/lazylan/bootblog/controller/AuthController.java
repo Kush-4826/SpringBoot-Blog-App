@@ -44,9 +44,9 @@ public class AuthController extends ApiController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody JwtRequestDTO jwtRequestDTO) {
-        this.doAuthenticate(jwtRequestDTO.getUsername(), jwtRequestDTO.getPassword());
+        this.doAuthenticate(jwtRequestDTO.getEmail(), jwtRequestDTO.getPassword());
 
-        User user = (User) userDetailsService.loadUserByUsername(jwtRequestDTO.getUsername());
+        User user = (User) userDetailsService.loadUserByUsername(jwtRequestDTO.getEmail());
         String token = this.jwtHelper.generateToken(user);
 
         JwtResponseDTO jwtResponseDTO = JwtResponseDTO.builder()
@@ -73,7 +73,7 @@ public class AuthController extends ApiController {
     @PostMapping("/register")
     public ResponseEntity<JwtResponseDTO> store(@Valid @RequestBody UserRequestDTO userDto) {
         UserResponseDTO createdUser = this.userService.createUser(userDto);
-        User user = (User) userDetailsService.loadUserByUsername(createdUser.getUsername());
+        User user = (User) userDetailsService.loadUserByUsername(createdUser.getEmail());
         String token = this.jwtHelper.generateToken(user);
 
         JwtResponseDTO jwtResponseDTO = JwtResponseDTO.builder()

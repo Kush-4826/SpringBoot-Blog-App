@@ -70,7 +70,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         String password = passwordEncoder.encode("abcd1234");
         for (int i = 0; i < 100; ++i) {
             User user = new User();
-            user.setUsername(faker.name().username());
+            user.setName(faker.name().username());
             user.setPassword(password);
             user.setEmail(faker.internet().emailAddress());
             user.setGender(faker.options().option("Male", "Female", "Other"));
@@ -79,7 +79,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             users.add(user);
         }
         User admin = new User();
-        admin.setUsername("admin");
+        admin.setName("admin");
         admin.setPassword(password);
         admin.setEmail("admin@example.com");
         admin.setGender("Other");

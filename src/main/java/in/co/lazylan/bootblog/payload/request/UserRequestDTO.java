@@ -17,8 +17,8 @@ import lombok.ToString;
 public class UserRequestDTO {
     @NotEmpty(message = "Username cannot be empty")
     @Size(min = 3, message = "Username must be at least 3 characters long")
-    @Unique(service = UserServiceImpl.class, fieldName = "username", message = "Username already exists")
-    private String username;
+    @Unique(service = UserServiceImpl.class, fieldName = "name", message = "Username already exists")
+    private String name;
 
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 8, message = "Password must be at least 8 characters long")

@@ -23,15 +23,15 @@ public class CustomUserDetailService implements UserDetailsService {
      * implement this method. In this method, now we'll fetch the user from the database
      * based on the username.
      *
-     * @param username the username identifying the user whose data is required.
+     * @param email the username identifying the user whose data is required.
      * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = this.userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + username + " not found"));
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
         return user;
     }
 }
