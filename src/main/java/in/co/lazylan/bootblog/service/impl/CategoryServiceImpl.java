@@ -86,4 +86,10 @@ public class CategoryServiceImpl implements CategoryService {
         }
         throw new UnsupportedOperationException(fieldName + " field does not exist");
     }
+
+    @Override
+    public boolean fieldValueExistsExceptSelf(Object value, String fieldName) throws UnsupportedOperationException {
+        return false;
+    }
+
 }
