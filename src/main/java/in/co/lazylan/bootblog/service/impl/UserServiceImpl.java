@@ -3,12 +3,14 @@ package in.co.lazylan.bootblog.service.impl;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.UserRequestDTO;
+import in.co.lazylan.bootblog.payload.request.UserUpdateRequestDTO;
 import in.co.lazylan.bootblog.payload.response.UserResponseDTO;
 import in.co.lazylan.bootblog.repo.UserRepository;
 import in.co.lazylan.bootblog.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,14 +44,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO updateUser(UserRequestDTO userDto, int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
+    public UserResponseDTO updateUser(UserUpdateRequestDTO userDto, int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
         if (!authUser.isAdmin() && id != authUser.getId()) throw new AccessDeniedException("Access denied");
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User ID", id));
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setUsername(userDto.getUsername());
+//        user.setPassword(userDto.getPassword());
+//        user.setUsername(userDto.getUsername());
         user.setGender(userDto.getGender());
         user.setAbout(userDto.getAbout());
         User updatedUser = this.userRepository.save(user);
@@ -128,5 +130,15 @@ public class UserServiceImpl implements UserService {
 
             default -> throw new UnsupportedOperationException(fieldName + " field does not exist");
         }
+    }
+
+    @Override
+    public boolean fieldValueExistsExceptSelf(Object value, String fieldName) throws UnsupportedOperationException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (fieldName.equals("email")) {
+            if (user.getEmail().equalsIgnoreCase(value.toString())) return false;
+            return this.userRepository.existsByEmail(value.toString());
+        }
+        throw new UnsupportedOperationException(fieldName + " field does not exist");
     }
 }

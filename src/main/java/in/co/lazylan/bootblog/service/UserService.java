@@ -3,6 +3,7 @@ package in.co.lazylan.bootblog.service;
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
 import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.UserRequestDTO;
+import in.co.lazylan.bootblog.payload.request.UserUpdateRequestDTO;
 import in.co.lazylan.bootblog.payload.response.UserResponseDTO;
 import in.co.lazylan.bootblog.util.FieldValueExists;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface UserService extends FieldValueExists {
     UserResponseDTO createUser(UserRequestDTO userDto);
 
-    UserResponseDTO updateUser(UserRequestDTO userDto, int id, User authUser) throws ResourceNotFoundException, AccessDeniedException;
+    UserResponseDTO updateUser(UserUpdateRequestDTO userDto, int id, User authUser) throws ResourceNotFoundException, AccessDeniedException;
 
     UserResponseDTO getUserById(int id, User authUser) throws ResourceNotFoundException, AccessDeniedException;
 
