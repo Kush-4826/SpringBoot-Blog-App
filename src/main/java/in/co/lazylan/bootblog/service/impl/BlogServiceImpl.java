@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -184,10 +185,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponseDTO> getBlogByAuthor(int id) throws ResourceNotFoundException {
+    public List<BlogResponseDTO> getBlogByAuthor(int id, User authUser) throws ResourceNotFoundException, AccessDeniedException {
         User user = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Author", "ID", id));
+
+        if (!authUser.isAdmin() &&
+                authUser.getId() != user.getId()) throw new AccessDeniedException("Access Denied");
 
         List<Blog> blogs = user.getBlogs();
         List<BlogResponseDTO> blogResponseDTOS = blogs.stream()

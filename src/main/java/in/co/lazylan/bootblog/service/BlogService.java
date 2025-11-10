@@ -6,6 +6,7 @@ import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedCommentsResponseDTO;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface BlogService {
 
     List<BlogResponseDTO> getBlogsByCategory(int id) throws ResourceNotFoundException;
 
-    List<BlogResponseDTO> getBlogByAuthor(int id) throws ResourceNotFoundException;
+    List<BlogResponseDTO> getBlogByAuthor(int id, User authUser) throws ResourceNotFoundException, AccessDeniedException;
 
     List<BlogResponseDTO> searchBlog(String keyword);
 

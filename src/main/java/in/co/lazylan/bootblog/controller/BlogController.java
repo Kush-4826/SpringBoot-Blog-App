@@ -12,6 +12,7 @@ import in.co.lazylan.bootblog.util.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,9 +55,10 @@ public class BlogController extends ApiController {
 
     @GetMapping("/users/{userId}/blogs")
     public ResponseEntity<List<BlogResponseDTO>> getBlogsByAuthor(
-            @PathVariable int userId
-    ) throws ResourceNotFoundException {
-        List<BlogResponseDTO> blogsByAuthor = this.blogService.getBlogByAuthor(userId);
+            @PathVariable int userId,
+            @AuthenticationPrincipal User authUser
+    ) throws ResourceNotFoundException, AccessDeniedException {
+        List<BlogResponseDTO> blogsByAuthor = this.blogService.getBlogByAuthor(userId, authUser);
         return new ResponseEntity<>(blogsByAuthor, HttpStatus.OK);
     }
 
