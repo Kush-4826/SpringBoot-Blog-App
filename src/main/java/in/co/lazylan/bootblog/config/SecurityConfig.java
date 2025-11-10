@@ -49,6 +49,8 @@ public class SecurityConfig {
                                 auth
                                         // Categories Routes
                                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/blogs/**").permitAll()
                                         // Auth Routes
                                         .requestMatchers("/api/auth/login").permitAll()
                                         .requestMatchers("/api/auth/register").permitAll()
