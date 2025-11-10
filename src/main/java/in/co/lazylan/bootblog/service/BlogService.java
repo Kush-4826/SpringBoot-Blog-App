@@ -1,6 +1,7 @@
 package in.co.lazylan.bootblog.service;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
+import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface BlogService {
-    BlogResponseDTO createBlog(BlogRequestDTO blogDto, int authorId, int categoryId) throws ResourceNotFoundException;
+    BlogResponseDTO createBlog(BlogRequestDTO blogDto, User authUser) throws ResourceNotFoundException;
 
     BlogResponseDTO updateBlog(BlogRequestDTO blogDto, int id) throws ResourceNotFoundException;
 

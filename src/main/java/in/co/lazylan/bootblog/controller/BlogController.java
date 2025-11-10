@@ -1,6 +1,7 @@
 package in.co.lazylan.bootblog.controller;
 
 import in.co.lazylan.bootblog.exception.ResourceNotFoundException;
+import in.co.lazylan.bootblog.model.User;
 import in.co.lazylan.bootblog.payload.request.BlogRequestDTO;
 import in.co.lazylan.bootblog.payload.response.BlogResponseDTO;
 import in.co.lazylan.bootblog.payload.response.PaginatedBlogResponseDTO;
@@ -11,6 +12,7 @@ import in.co.lazylan.bootblog.util.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,13 +26,12 @@ public class BlogController extends ApiController {
         this.blogService = blogService;
     }
 
-    @PostMapping("/users/{userId}/categories/{categoryId}/blogs")
+    @PostMapping("/blogs")
     public ResponseEntity<BlogResponseDTO> createBlog(
             @Valid @RequestBody BlogRequestDTO blogDto,
-            @PathVariable int userId,
-            @PathVariable int categoryId
+            @AuthenticationPrincipal User user
     ) throws ResourceNotFoundException {
-        BlogResponseDTO dto = this.blogService.createBlog(blogDto, userId, categoryId);
+        BlogResponseDTO dto = this.blogService.createBlog(blogDto, user);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 

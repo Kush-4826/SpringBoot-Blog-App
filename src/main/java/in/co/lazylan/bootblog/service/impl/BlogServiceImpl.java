@@ -67,18 +67,27 @@ public class BlogServiceImpl implements BlogService {
             }
         };
 
+        PropertyMap<BlogRequestDTO, Blog> map = new PropertyMap<>() {
+            @Override
+            protected void configure() {
+                skip(destination.getId());
+            }
+        };
+        this.modelMapper.addMappings(map);
+
         // Finally we add this property map to the modelmapper
         this.modelMapper.addMappings(blogMap);
         this.commentRepository = commentRepository;
     }
 
     @Override
-    public BlogResponseDTO createBlog(BlogRequestDTO blogDto, int authorId, int categoryId) throws ResourceNotFoundException {
+    public BlogResponseDTO createBlog(BlogRequestDTO blogDto, User authUser) throws ResourceNotFoundException {
         // Fetching the supporting resources
-        User user = this.userRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("User", "ID", authorId));
-        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
+        User user = this.userRepository.findById(authUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "ID", authUser.getId()));
+        Category category = this.categoryRepository.findById(blogDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "ID", blogDto.getCategoryId()));
 
         Blog blog = modelMapper.map(blogDto, Blog.class);
+        System.out.println("Blog to be created id: " + blog.getId());
         // Manually setting the imagename for now
         // TODO: Implement the Image API
         blog.setImageName("sample.jpg");
